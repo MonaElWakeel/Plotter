@@ -53,7 +53,8 @@ export class Home extends Component {
             this.measuresArray = this.state.measures.slice();
             console.log(this.measuresArray);
             this.setState({ measValues: this.measuresArray.toString(), measures: [] });
-
+        } else {
+            this.setState({ measures: [] });
         }
     }
     //drop the selected measure.
@@ -73,7 +74,7 @@ export class Home extends Component {
         e.preventDefault();
         const data = JSON.parse(e.dataTransfer.getData('text/plain'));
         if (data.function == "dimension") {
-            this.setState({ dimValue: data.name});
+            this.setState({ dimValue: data.name ,measures: this.measuresArray });
         } else {
             this.showError('you have to set a dimension value in this field');
         }
