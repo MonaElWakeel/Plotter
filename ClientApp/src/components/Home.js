@@ -15,10 +15,12 @@ export class Home extends Component {
         super(props);
         this.state = {
             dimValue: '', // dimension value in x-axis
-            measures:[], // measures in y-axis
+            measValues:'',
+            measures: [], // measures in y-axis
             columns: [], // all dimensions and measures user will select from
         }
         //url that contains columns data
+        this.measuresArray = [];
         this.columnsUrl = 'https://plotter-task.herokuapp.com/columns';
         this.getChartColumns();
         this.resetDimensions = this.resetDimensions.bind(this);
@@ -41,21 +43,27 @@ export class Home extends Component {
     }
     //clear measure.
     resetMeasures() {
-        this.setState({ measures:[] });
+        this.setState({ measValues:'',measures:[] });
     }
     onDragStart = (e, v) => {
         console.log("dragstart");
         e.dataTransfer.dropEffect = "move";
         e.dataTransfer.setData('text/plain', JSON.stringify(v));
+        if (JSON.parse(e.dataTransfer.getData('text/plain')).function == "measure") {
+            this.measuresArray = this.state.measures.slice();
+            console.log(this.measuresArray);
+            this.setState({ measValues: this.measuresArray.toString(), measures: [] });
+
+        }
     }
     //drop the selected measure.
     onDropMeasure = e => {
         e.preventDefault();
         const data = JSON.parse(e.dataTransfer.getData('text/plain'));
         if (data.function == "measure") {
-            var newStateArray = [];//this.state.measures.slice();
-            newStateArray.push(data.name);
-            this.setState({ measures: newStateArray });
+            this.measuresArray.push(data.name);
+            console.log(this.measuresArray);
+            this.setState({ measValues: this.measuresArray.toString(),measures: this.measuresArray });
         } else {
             this.showError('you have to set a measure value in this field');
         }
@@ -112,7 +120,7 @@ export class Home extends Component {
                         <div className="p-field">
                             <label htmlFor="Measures">Measures</label>
                             <div className="row">
-                                <InputText id="Measures" type="text" className="ml-3 col-6" value={this.state.measures.toString()} onDragOver={this.allowDrop} onDrop={this.onDropMeasure} />
+                                <InputText id="Measures" type="text" className="ml-3 col-6" value={this.state.measValues} onDragOver={this.allowDrop} onDrop={this.onDropMeasure} />
                                 <Button label="Clear" className="button ml-2 col-3 p-button-raised p-button-rounded" onClick={this.resetMeasures} />
                             </div>
                         </div>
