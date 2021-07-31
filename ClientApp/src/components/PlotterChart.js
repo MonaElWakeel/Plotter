@@ -10,19 +10,12 @@ export class PlotterChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            measure: this.props.measure,
-            dimension: this.props.dimension,
-            chartInq: {
-                "measures": this.props.measure,
-                "dimension": this.props.dimension,
-            },
             chartData: {
                 labels: [],
                 datasets: [],
             }
         }
-        
-        console.log(this.state.chartInq);
+        //url that contains chart dataSet
         this.dataUrl = 'https://plotter-task.herokuapp.com/data';
         this.getChartData();
         this.options = {
@@ -58,9 +51,14 @@ export class PlotterChart extends Component {
 
     }
     async getChartData() {
-        axios.post(this.dataUrl, this.state.chartInq)
+        this.chartInq = {
+            "measures": this.props.measure,
+            "dimension": this.props.dimension,
+        }
+        console.log(this.chartInq);
+        axios.post(this.dataUrl, this.chartInq)
             .then(response => {
-                this.datasets = [];
+                this.datasets = this.state.chartData.datasets.slice();
                 for (var i = 1; i < response.data.length; i++) {
                     this.datasets.push(
                         {

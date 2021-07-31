@@ -1,0 +1,25 @@
+﻿
+.inputs {
+    margin-left: 5%;
+    background-color: #ffe6e6;
+    border: 2px solid grey;
+    border-radius: 6px;
+}
+Label {
+    color: #330000;
+    font-weight: bold;
+    font-size: 24px
+}
+.drag-container {
+    color: Black;
+    background-color: #ffe6e6;
+    text-align: center;
+    border: 2px solid grey;
+    border-radius: 6px;
+}
+.button {
+    background-color: #ff6666;
+    border-color: white;
+    color: white;
+    font-size: 18px
+}
